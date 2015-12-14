@@ -1,4 +1,6 @@
-Fast multi-camera motion solvers
+===
+Multi-camera Motion
+===
 
 --
 C++ implementation of solvers from the ICCV paper:
@@ -10,6 +12,7 @@ Jonathan Ventura, Clemens Arth and Vincent Lepetit.  An efficient minimal soluti
 Dependencies:
 
 Eigen
+
 Polynomial (my polynomial root-finding library, also hosted from this account on GitHub)
 
 --
