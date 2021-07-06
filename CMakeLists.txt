@@ -17,10 +17,13 @@ include_directories( include /usr/local/include )
 
 add_library( multi-camera-motion
 include/multi-camera-motion/approx_relpose_generalized_fast.h
+include/multi-camera-motion/approx_relpose_generalized.h
 include/multi-camera-motion/approx_relpose_axial.h
 include/multi-camera-motion/approx_relpose_axial_fast.h
 include/multi-camera-motion/relpose_generalized_affine.h
+include/multi-camera-motion/translation.h
 
+src/approx_relpose_generalized.cpp
 src/approx_relpose_generalized_fast_computeA.h
 src/approx_relpose_axial_fast_computeA.h
 src/approx_relpose_generalized_fast_computeA.cpp
@@ -29,6 +32,7 @@ src/approx_relpose_axial.cpp
 src/approx_relpose_axial_fast_computeA.cpp
 src/approx_relpose_axial_fast.cpp
 src/relpose_generalized_affine.cpp
+src/translation.cpp
 )
 
 add_subdirectory( test )

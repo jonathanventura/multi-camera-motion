@@ -111,7 +111,7 @@ AffineRegion generateAffineRegion(Eigen::Vector3d X)
     return a;
 }
 
-void generateAffineProblem( double trans_mag, double angle, double noise, double affine_noise, AffineProblem &prob )
+void generateAffineProblem( double trans_mag, double angle, double noise, double affine_noise, AffineProblem &prob, int nrays )
 {
     Eigen::Vector3d X;    // 3D point
     Eigen::Vector3d cu;   // camera center for first multi-camera rig
@@ -133,7 +133,7 @@ void generateAffineProblem( double trans_mag, double angle, double noise, double
     prob.ray_pairs.clear(); // clear out ray pairs to be safe
 
     // generate observations
-    for ( size_t i = 0; i < 18; i++ )
+    for ( size_t i = 0; i < nrays; i++ )
     {
         X = rand3f();                          // sample random point
         while ( X.norm() == 0 ) X = rand3f();  // ensure point is not all zeros

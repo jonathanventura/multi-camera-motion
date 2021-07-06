@@ -6,6 +6,9 @@
 
 #include <iostream>
 
+#include <cstdlib>
+#include <ctime>
+
 static Eigen::Vector2d project( const Eigen::Vector3d &x )
 {
     return x.head(2)/x[2];
@@ -13,6 +16,8 @@ static Eigen::Vector2d project( const Eigen::Vector3d &x )
 
 int main( int argc, char **argv )
 {
+    srand(time(NULL));
+
     const double trans_mag = 1.;
     const double angle = 5.*M_PI/180.;
     const double noise = 0;

@@ -12,5 +12,13 @@ add_executable( test_affine
 target_link_libraries( test_affine ${OpenCV_LIBS} )
 target_link_libraries( test_affine multi-camera-motion )
 
+add_executable( test_approx
+    random.h
+    so3.h so3.cpp
+    problem.h problem.cpp
+    test_approx.cpp
+)
+target_link_libraries( test_approx multi-camera-motion )
+
 
 

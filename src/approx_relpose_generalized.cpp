@@ -1,5 +1,5 @@
 
-#include "approx_relpose_generalized.h"
+#include <multi-camera-motion/approx_relpose_generalized.h>
 
 #include <Eigen/LU>
 #include <Eigen/Jacobi>

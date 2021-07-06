@@ -22,5 +22,5 @@ struct AffineProblem
     AffineRayPairList ray_pairs;
 };
 
-void generateAffineProblem( double trans_mag, double angle, double noise, double affine_noise, AffineProblem &prob );
+void generateAffineProblem( double trans_mag, double angle, double noise, double affine_noise, AffineProblem &prob, int nrays = 18 );
 

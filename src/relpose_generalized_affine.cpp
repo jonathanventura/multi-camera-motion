@@ -1,19 +1,11 @@
 
 #include <multi-camera-motion/relpose_generalized_affine.h>
 
+#include <multi-camera-motion/translation.h>
+
 #include <Eigen/LU>
 #include <Eigen/Jacobi>
 #include <Eigen/SVD>
-
-static Eigen::Vector4d get_translation_row( const Eigen::Matrix3d &R,
-                                           const Eigen::Vector2d &x,
-                                           const Eigen::Vector2d &y,
-                                           const Eigen::Vector3d &cu,
-                                           const Eigen::Vector3d &cv
-                                           )
-{
-    return Eigen::Vector4d( R(1,2) - R(2,2)*y(1) + x(0)*(R(1,0) - R(2,0)*y(1)) + x(1)*(R(1,1) - R(2,1)*y(1)), R(2,2)*y(0) - R(0,2) - x(0)*(R(0,0) - R(2,0)*y(0)) - x(1)*(R(0,1) - R(2,1)*y(0)), R(0,2)*y(1) - R(1,2)*y(0) + x(0)*(R(0,0)*y(1) - R(1,0)*y(0)) + x(1)*(R(0,1)*y(1) - R(1,1)*y(0)), R(2,0)*cu(1) - R(2,1)*cu(0) + R(0,2)*cv(1) - R(1,2)*cv(0) + y(0)*(R(0,0)*cu(1) - R(0,1)*cu(0) + R(1,2)*cv(2) - R(2,2)*cv(1)) + y(1)*(R(1,0)*cu(1) - R(1,1)*cu(0) - R(0,2)*cv(2) + R(2,2)*cv(0)) + x(0)*(R(2,1)*cu(2) - R(2,2)*cu(1) + R(0,0)*cv(1) - R(1,0)*cv(0) + y(0)*(R(0,1)*cu(2) - R(0,2)*cu(1) + R(1,0)*cv(2) - R(2,0)*cv(1)) + y(1)*(R(1,1)*cu(2) - R(1,2)*cu(1) - R(0,0)*cv(2) + R(2,0)*cv(0))) - x(1)*(R(2,0)*cu(2) - R(2,2)*cu(0) - R(0,1)*cv(1) + R(1,1)*cv(0) + y(0)*(R(0,0)*cu(2) - R(0,2)*cu(0) - R(1,1)*cv(2) + R(2,1)*cv(1)) + y(1)*(R(1,0)*cu(2) - R(1,2)*cu(0) + R(0,1)*cv(2) - R(2,1)*cv(0))) );
-}
 
 static Eigen::Matrix<double,1,9> get_AE_row( const Eigen::Vector2d &x,
                                              const Eigen::Vector2d &y,
@@ -172,24 +164,8 @@ relpose_generalized_affine
     tsolns.resize(2);
     Rsolns[0] = R1;
     Rsolns[1] = R2;
-
-    // solve for translations
-    Eigen::MatrixXd A(N,4);
     
-    for ( size_t i = 0; i < Rsolns.size(); i++ )
-    {
-        const Eigen::Matrix3d Rsoln = Rsolns[i];
-        
-        for ( int j = 0; j < N; j++ )
-        {
-            // point
-            A.row(j) = get_translation_row( Rsoln, x.col(j),  y.col(j), cu.col(j), cv.col(j) );
-        }
-
-        Eigen::JacobiSVD<Eigen::MatrixXd> jacobiSvd(A,Eigen::ComputeThinV);
-        const Eigen::Matrix<double,4,1> t = jacobiSvd.matrixV().col(3);
-        Eigen::Vector3d tsoln = t.head(3)/t[3];
-        
-        tsolns[i] = tsoln;
-    }
+    tsolns[0] = solve_translation( x, y, cu, cv, Rsolns[0] );
+    tsolns[1] = solve_translation( x, y, cu, cv, Rsolns[1] );
 }
+
