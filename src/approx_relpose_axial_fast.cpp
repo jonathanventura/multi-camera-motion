@@ -2,7 +2,7 @@
 #include <multi-camera-motion/approx_relpose_axial_fast.h>
 
 #include <Polynomial/Polynomial.hpp>
-using Polynomial::Polynomial;
+using polynomial::Polynomial;
 
 #include <Eigen/LU>
 #include <Eigen/Jacobi>
